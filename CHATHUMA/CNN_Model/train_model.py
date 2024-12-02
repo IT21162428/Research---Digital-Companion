@@ -1,12 +1,10 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
-import matplotlib.pyplot as plt
+from data_preprocessing import X_train, y_train, X_test, y_test  # Import preprocessed data from data_preprocessing.py
 
-# Assume X_train, X_test, y_train, y_test are already preprocessed and loaded
-# Example: Replace with your actual dataset loading/preprocessing code
-# X_train, X_test, y_train, y_test = ...
+# Define the categories (must match the order in data_preprocessing.py)
+categories = ["Angry", "Fear", "Happy", "Neutral", "Sad", "Suprise"]
 
 # Define CNN model
 model = Sequential([
@@ -17,24 +15,27 @@ model = Sequential([
     Flatten(),
     Dense(128, activation='relu'),
     Dropout(0.5),
-    Dense(7, activation='softmax')  # Assuming 7 emotion categories
+    Dense(len(categories), activation='softmax')  # Number of categories as output
 ])
 
 # Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Train the model
+print("Training the model...")
 history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=64)
 
 # Save the trained model
 model.save("emotion_cnn_model.h5")
-print("Model saved successfully!")
+print("Model saved successfully as 'emotion_cnn_model.h5'.")
 
-# ---- Add Evaluation and Visualization Code Below ----
-
-# Evaluate model on testing data
+# Evaluate the model
+print("Evaluating the model...")
 test_loss, test_accuracy = model.evaluate(X_test, y_test)
 print(f"Test Accuracy: {test_accuracy * 100:.2f}%")
+
+# Visualize training history
+import matplotlib.pyplot as plt
 
 # Plot training and validation accuracy
 plt.plot(history.history['accuracy'], label='Train Accuracy')

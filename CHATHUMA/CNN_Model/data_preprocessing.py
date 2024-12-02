@@ -5,7 +5,7 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
 # Correct dataset path based on directory structure
-dataset_path = "../Dataset"  # Correct relative path
+dataset_path = "Dataset"  # Correct relative path
 categories = ["Angry", "Fear", "Happy", "Neutral", "Sad", "Suprise"]  # Match folder names exactly
 
 # Load and preprocess data
@@ -13,6 +13,7 @@ def load_data(subset):
     data = []
     labels = []
     subset_path = os.path.join(dataset_path, subset)
+    print(subset_path)
     print("Absolute path being accessed:", os.path.abspath(subset_path))  # Debugging step
     print(f"Contents of {subset} folder:", os.listdir(subset_path))  # Debugging step
     for label, category in enumerate(categories):
